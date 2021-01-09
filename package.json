@@ -1,0 +1,26 @@
+{
+  "name": "wxmp_3.0",
+  "version": "0.0.0",
+  "scripts": {
+    "serve": "vite --mode development",
+    "build": "vite build --mode production",
+    "build:test": "vite build --mode alpha"
+  },
+  "dependencies": {
+    "amfe-flexible": "^2.2.1",
+    "axios": "^0.21.0",
+    "qs": "^6.9.4",
+    "tailwindcss": "^1.6.2",
+    "vant": "^3.0.0-beta.10",
+    "vue": "^3.0.2",
+    "weixin-js-sdk": "^1.6.0",
+    "vue-router": "4.0.0-beta.6"
+  },
+  "devDependencies": {
+    "@vue/compiler-sfc": "^3.0.2",
+    "postcss-pxtorem": "^5.1.1",
+    "sass": "^1.29.0",
+    "typescript": "^4.1.2",
+    "vite": "^1.0.0-rc.8"
+  }
+}
