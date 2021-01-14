@@ -8,7 +8,7 @@
       <div class="flex justify-between mt-8">
         <span class="hotStyle px-4 flex items-center text-red-hot">热度指数：{{ itemData.degree }}</span>
         <span class="text-black-1"
-          >距离<span class="text-red-distance pl-5">{{ itemData.distance }}</span></span
+          >距离<span class="text-red-distance pl-5">{{ Math.floor(itemData.distance) }}</span></span
         >
       </div>
       <p class="van-ellipsis text-black-7 mt-12 text-14" style="line-height: 120%">{{ itemData.address }}</p>
@@ -17,7 +17,7 @@
       <!-- <span class="text-black-1" @click="linkToDetail(itemData.id)" v-if="itemData.fans">{{ itemData.fans }}人签到</span> -->
       <div class="flex items-center">
         <!-- <router-link class="button" to="TMapMode">签到</router-link> -->
-        <a :href="'tel:' + itemData.mobile" class="button" v-if="itemData.mobile">联系门店</a>
+        <a :href="'tel:' + itemData.mobile" class="button rounded-full" v-if="itemData.mobile">联系门店</a>
         <div
           class="button flex justify-center items-center rounded-full text-black-5 btn-active text-red-map"
           @click.stop="goNav(itemData)"
@@ -75,6 +75,7 @@ export default defineComponent({
 .button {
   width: 150px;
   height: 58px;
+  line-height: 58px;
   border: 1px solid #bababa;
   margin-right: 24px;
   font-weight: 550;

@@ -3,13 +3,17 @@
     <div class="sticky z-20 fixed left-0 top-0 text-14 bg-default">
       <div class="h-50 flex justify-between pl-16 pr-12">
         <div class="flex items-center" @click="linkToTMap">
-          <!-- <img src="~@/assets/icons/icon-map-style.png" class="w-20 h-20" /> -->
+          <img src="../../assets/images/icons/icon-map-style.png" class="w-20 h-20" />
           <div class="pl-8 text-16">地图模式</div>
         </div>
         <form action="javascript:return" class="searchBox">
           <Search left-icon="left-icon" v-model="query.keyword" shape="round" placeholder="搜索地址" @search="onSearch" />
         </form>
       </div>
+      <DropdownMenu>
+        <dropdown-item v-model="state.value1" :options="option1"></dropdown-item>
+        <dropdown-item v-model="state.value2" :options="option2"></dropdown-item>
+      </DropdownMenu>
       <!-- <div class="picker-bar z-20">
         <PickerArea class="flex-1 text-center" @onChangeArea="onChangeArea" to="picker" maskCloseable></PickerArea>
         <PickerOrderBy class="flex-1 text-center" @onChangeOrder="onChangeOrder" to="picker" maskCloseable></PickerOrderBy>
@@ -38,14 +42,14 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent, reactive } from 'vue'
 import { getDataByAddr, getDataByXY, getDataBySearch } from '../../apis'
-// import AMap from 'AMap'
 import { List, PullRefresh, Loading, Search } from 'vant'
 import CardStoreInfo from '../../components/CardStoreInfo.vue'
 import mapState from '../../mapState'
 import wx from 'weixin-js-sdk'
 const AMap = window.AMap
+
 export default defineComponent({
   name: 'StoresMap',
   components: {
@@ -54,6 +58,29 @@ export default defineComponent({
     Loading,
     Search,
     CardStoreInfo
+  },
+  setup() {
+    const state = reactive({
+      value1: 0,
+      value2: 'a'
+    })
+    const option1 = [
+      { text: '全部商品', value: 0 },
+      { text: '新款商品', value: 1 },
+      { text: '活动商品', value: 2 }
+    ]
+    const option2 = [
+      { text: '默认排序', value: 'a' },
+      { text: '好评排序', value: 'b' }
+    ]
+
+    return {
+      state,
+      option1,
+      option2
+    }
+
+    
   },
   data() {
     return {
@@ -86,7 +113,6 @@ export default defineComponent({
   mounted() {
     // this.query.keyword = this.shareState.keyword;
     this.query.orderBy = this.shareState.orderBy
-    console.log('11')
     if (!this.shareState.locationLng) {
       const _locationLng = window.sessionStorage.getItem('locationLng')
       const _locationLat = window.sessionStorage.getItem('locationLat')
@@ -347,7 +373,7 @@ export default defineComponent({
 }
 
 .van-search__content {
-  background: #fefffe;
+  background-color: #fff;
 }
 
 .picker-bar {

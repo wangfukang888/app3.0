@@ -12,7 +12,7 @@
       <div class="_" style="height: 3.198%; top: 93.656%; left: 80.487%; width: 5.688%"></div>
     </div>
     <div class="padding-tabbar">
-      <p class="title pl-35 pt-27 pb-18 bg-white text-21 font-semibold relative">成长</p>
+      <!-- <p class="title pl-35 pt-27 pb-18 bg-white text-21 font-semibold relative">成长</p> -->
       <div class="mx-12">
         <div class="mt-10 px-40 py-20 bg-white rounded-8 font-medium" v-for="item in growupData" :key="item.desc">
           <p class="text-22 text-center font-digit">

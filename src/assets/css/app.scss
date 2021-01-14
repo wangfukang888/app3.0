@@ -90,3 +90,16 @@ progress {
     opacity: 1;
   }
 }
+
+.scroll-container {
+  .bscroll-vertical-scrollbar {
+    width: 4px !important;
+  }
+  // /deep/ .bscroll-indicator{
+  //   border: none !important;
+  // }
+}
+
+input[type='search'] {
+  background: transparent;
+}

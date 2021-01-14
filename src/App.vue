@@ -34,11 +34,9 @@ export default {
       this.animate = ''
       if (to.meta.index > from.meta.index) {
         //设置动画名称
-        console.log('left')
         this.animate = 'slide-left'
       }
       if (to.meta.index < from.meta.index) {
-        console.log('right')
         this.animate = 'slide-right'
       }
     }
