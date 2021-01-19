@@ -20,7 +20,7 @@ module.exports = {
       60: pxtorem(60),
       70: pxtorem(70),
       110: pxtorem(110),
-      130: pxtorem(130),
+      130: pxtorem(130)
     },
     height: {
       full: '100%',
@@ -41,7 +41,7 @@ module.exports = {
       100: pxtorem(100),
       120: pxtorem(120),
       130: pxtorem(130),
-      200: pxtorem(200),
+      200: pxtorem(200)
     },
     lineHeight: {
       none: '1',
@@ -50,7 +50,7 @@ module.exports = {
       20: pxtorem(20),
       25: pxtorem(25),
       40: pxtorem(40),
-      50: pxtorem(50),
+      50: pxtorem(50)
     },
     fontSize: {
       11: pxtorem(11),
@@ -68,7 +68,7 @@ module.exports = {
       24: pxtorem(24),
       30: pxtorem(30),
       32: pxtorem(32),
-      40: pxtorem(40),
+      40: pxtorem(40)
     },
     spacing: {
       auto: 'auto',
@@ -95,7 +95,7 @@ module.exports = {
       40: pxtorem(40),
       45: pxtorem(45),
       50: pxtorem(50),
-      80: pxtorem(80),
+      80: pxtorem(80)
     },
     boxShadow: {
       default: `0 ${pxtorem(10)} ${pxtorem(15)} ${pxtorem(
@@ -104,7 +104,7 @@ module.exports = {
         -2
       )} rgba(0, 0, 0, .05)`,
       top: `0 ${pxtorem(-5)} ${pxtorem(15)} ${pxtorem(-3)} rgba(0, 0, 0, .1)`,
-      bottom: `0 ${pxtorem(5)} ${pxtorem(15)} ${pxtorem(-3)} rgba(0, 0, 0, .1)`,
+      bottom: `0 ${pxtorem(5)} ${pxtorem(15)} ${pxtorem(-3)} rgba(0, 0, 0, .1)`
     },
     borderRadius: {
       default: pxtorem(4),
@@ -113,7 +113,7 @@ module.exports = {
       0: '0!important',
       8: pxtorem(8),
       10: pxtorem(10),
-      12: pxtorem(12),
+      12: pxtorem(12)
     },
     colors: {
       mask: '#767778',
@@ -121,7 +121,7 @@ module.exports = {
         default: '#FF4400',
         light: '#FF9029',
         lighter: '#FFC526',
-        tel: '#088AFF',
+        tel: '#088AFF'
       },
       white: '#fff',
       black: {
@@ -133,7 +133,7 @@ module.exports = {
         4: '#000000',
         5: '#333',
         6: '#B7B7B7',
-        7: '#666',
+        7: '#666'
       },
       red: {
         default: '#FF4400',
@@ -146,23 +146,24 @@ module.exports = {
         bg: '#FF4949',
         reward: '#F02C2C',
         hot: '#FF8500',
-        distance: '#FF530C',
+        distance: '#FF530C'
       },
       green: {
-        default: '#00C576',
+        default: '#00C576'
       },
       gray: {
         default: '#D8D8D8',
         light: '#F9FAFB',
         sm: '#b5b4b4',
-        lighter: '#f0f2f5',
-      },
+        lg: '#eeeeee',
+        lighter: '#f0f2f5'
+      }
     },
     flex: {
-      '1': '1 1 0%',
-      '1.5': '1.5 1.5 0%',
-    },
+      1: '1 1 0%',
+      1.5: '1.5 1.5 0%'
+    }
   },
   variants: {},
-  plugins: [],
+  plugins: []
 }
