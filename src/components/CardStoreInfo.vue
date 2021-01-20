@@ -39,9 +39,6 @@ export default defineComponent({
   components: {
     ActionSheet
   },
-  data() {
-    return {}
-  },
   props: {
     itemData: {}
   },

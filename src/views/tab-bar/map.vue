@@ -10,36 +10,9 @@
           <Search left-icon="left-icon" v-model="query.keyword" shape="round" placeholder="搜索地址" @search="onSearch" />
         </form>
       </div>
-      <div class="filter-container">
-        <ul class="flex items-center text-14">
-          <li v-for="(item, index) in filterItems" :class="{ 'text-red': item.show }" :key="item.label" @click="changeItems(index)">
-            {{ item.label }}{{ item.show ? 1 : 2 }}
-          </li>
-        </ul>
-      </div>
+      <MapSelectMenu ref="compSelect" @selectChange="menuChange" />
     </div>
-    <teleport to="#pop">
-      <transition name="slide-fade">
-        <div class="fold-container" v-if="show_fold">
-          <ul class="text-14">
-            <li>距离由远到近</li>
-            <li>热度从高到低</li>
-          </ul>
-        </div>
-      </transition>
-    </teleport>
-    <teleport to="#pop">
-      <transition name="slide-fade">
-        <div class="pop-container" v-if="show_pop">
-          <div class="content text-14 p-10">选择省市区</div>
-        </div>
-      </transition>
-    </teleport>
-    <teleport to="#pop">
-      <transition name="fade">
-        <div class="mask" v-if="show_pop || show_fold" @click=";(show_pop = false), (show_fold = false)"></div>
-      </transition>
-    </teleport>
+
     <div class="px-12 empty" v-if="noData">
       <img class="w-130 h-130" src="~@/assets/icons/icon-empty.png" />
       <p class="text-16 text-black-3 mt-10">当前所在城市未获取地图数据敬请期待</p>
@@ -66,6 +39,7 @@ import { defineComponent, reactive } from 'vue'
 import { getDataByAddr, getDataByXY, getDataBySearch } from '../../apis'
 import { List, PullRefresh, Loading, Search } from 'vant'
 import CardStoreInfo from '../../components/CardStoreInfo.vue'
+import MapSelectMenu from '../../components/map/mapSelectMenu.vue'
 import mapState from '../../mapState'
 import wx from 'weixin-js-sdk'
 const AMap = window.AMap
@@ -77,16 +51,13 @@ export default defineComponent({
     PullRefresh,
     Loading,
     Search,
-    CardStoreInfo
+    CardStoreInfo,
+    MapSelectMenu
   },
   setup() {},
   data() {
     return {
       /* eslint-disable @typescript-eslint/camelcase */
-      filterItems: [
-        { label: '全部区域', show: false },
-        { label: '距离由远到近', show: false }
-      ],
       query: {
         mode: 1,
         keyword: '', //搜索
@@ -95,8 +66,6 @@ export default defineComponent({
         page: 1,
         page_size: 10
       },
-      show_pop: false,
-      show_fold: false,
       signatureQuery: {
         url: location.href.split('#')[0]
       },
@@ -138,21 +107,7 @@ export default defineComponent({
     }
   },
   methods: {
-    changeItems(index) {
-      this.filterItems.map(v => (v.show = false))
-      this.filterItems[0].label = '长沙市'
-      this.filterItems[index].show = !this.filterItems[index].show
-      if (index == 0) {
-        this.show_pop = true
-        this.show_fold = false
-      }
-      if (index == 1) {
-        this.show_pop = false
-        this.show_fold = true
-      }
-    },
     fetchType() {
-      0
       if (this.shareState.selectProvince && this.shareState.userSearch) {
         this.fetchBySearch()
       } else if (this.shareState.locationLng) {
@@ -162,6 +117,9 @@ export default defineComponent({
       } else {
         this.fetchByAddr()
       }
+    },
+    menuChange(id) {
+      console.log('选择的id:' + id)
     },
     getAddrBylng(lnglat) {
       const geocoder = new AMap.Geocoder({
@@ -182,6 +140,7 @@ export default defineComponent({
       })
     },
     linkToTMap() {
+      this.$refs.compSelect.maskClose()
       this.$router.push('/TMapMode')
     },
     onChangeArea() {
@@ -196,7 +155,6 @@ export default defineComponent({
       this.fetchType()
     },
     onSearch() {
-      //mapState.setKeywords(this.query.keyword)
       this.query.page = 1
       mapState.setSearchState(true)
       this.fetchBySearch()
@@ -261,7 +219,7 @@ export default defineComponent({
       }
       try {
         const _listData = await getDataByXY(_xyPosition)
-        this.fetchBySearch()
+        // this.fetchBySearch()
         this.noData = false
         this.listData = this.listData.concat(..._listData.OtherList)
         if (this.query.page == 1 && (!_listData.OtherList || _listData.OtherList.length == 0)) {
@@ -276,6 +234,7 @@ export default defineComponent({
         }
       } catch (err) {
         this.finished = true
+        this.noData = true
         this.error = err
       }
       this.listLoading = false
@@ -369,81 +328,7 @@ export default defineComponent({
   margin: 0 auto;
   padding-bottom: 90px;
 }
-.filter-container {
-  ul {
-    height: 90px;
-    li {
-      flex: 1;
-    }
-  }
-}
 
-.pop-container {
-  position: fixed;
-  width: 100%;
-  height: 70vh;
-  bottom: 0;
-  background: #fff;
-  z-index: 2000;
-  &.slide-fade-enter-active {
-    transition: all 0.3s ease-out;
-  }
-  &.slide-fade-leave-active {
-    transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
-  }
-  &.slide-fade-enter-from,
-  &.slide-fade-leave-to {
-    transform: translate3d(0, 100%, 0);
-    opacity: 0;
-  }
-}
-.mask {
-  position: fixed;
-  width: 100%;
-  left: 0;
-  top: 0;
-  z-index: 1000;
-  bottom: 0;
-  background: rgba($color: #000, $alpha: 0.6);
-  &.fade-enter-active {
-    transition: all 0.3s ease-out;
-  }
-  &.fade-leave-active {
-    transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
-  }
-  &.fade-enter-from,
-  &.fade-leave-to {
-    opacity: 0;
-  }
-}
-.fold-container {
-  position: fixed;
-  width: 100%;
-  top: 180px;
-  z-index: 2000;
-  padding: 0 40px;
-  text-align: left;
-  background: #fff;
-  &.slide-fade-enter-active {
-    transition: all 0.3s ease-out;
-  }
-  &.slide-fade-leave-active {
-    transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
-  }
-  &.slide-fade-enter-from,
-  &.slide-fade-leave-to {
-    transform: translate3d(0, -20px, 0);
-    opacity: 0;
-  }
-  li {
-    height: 100px;
-    line-height: 100px;
-    border-bottom: 0.5px solid #eee;
-    &:last-child {
-      border-bottom: none;
-    }
-  }
-}
 .empty {
   position: fixed;
   text-align: center;

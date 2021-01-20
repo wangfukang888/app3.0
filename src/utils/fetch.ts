@@ -43,6 +43,8 @@ http.interceptors.response.use(
         case 500:
           Toast('服务器访问失败,请刷新后重试')
           break
+        default:
+          Toast('服务器错误！')
       }
     } catch (err) {
       Toast('服务器错误或响应超时,请刷新重试')
