@@ -1,3 +1,5 @@
+import vue from '@vitejs/plugin-vue'
+import { defineConfig } from 'vite'
 const path = require('path')
 const fs = require('fs')
 
@@ -17,7 +19,7 @@ for (const file of envFiles) {
   }
 }
 
-module.exports = {
+export default defineConfig({
   /**
    * 在生产中服务时的基本公共路径。
    * @default '/'
@@ -35,17 +37,22 @@ module.exports = {
   https: false,
   // 服务端渲染
   ssr: false,
-  alias: {
-    // 键必须以斜线开始和结束
-    '/@/': path.resolve(__dirname, './src'),
-    img: path.resolve(__dirname, './src/assets/images'),
-    css: path.resolve(__dirname, './src/assets/css')
-    // '/@components/': path.resolve(__dirname, './src/components')
+  plugins: [vue()],
+  resolve: {
+    alias: [
+      { find: '/@', replacement: path.resolve(__dirname, './src') },
+      {
+        find: '/img',
+        replacement: path.resolve(__dirname, './src/assets/images')
+      }
+    ]
   },
-  proxy: {
-    '/wxmp/*': {
-      target: process.env.VITE_APP_ROOT,
-      changeOrigin: true
+  server: {
+    proxy: {
+      '/wxmp/*': {
+        target: process.env.VITE_APP_ROOT,
+        changeOrigin: true
+      }
     }
   }
-}
+})
