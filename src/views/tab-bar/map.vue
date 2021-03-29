@@ -12,13 +12,13 @@
       </div>
       <MapSelectMenu ref="compSelect" @selectChange="menuChange" />
     </div>
-    {{ state.listData }}
+    {{ listData }}
     <div class="px-12 empty" v-if="noData">
       <img class="w-130 h-130" src="/img/icons/icon-empty.png" />
       <p class="text-16 text-black-3 mt-10">当前所在城市未获取地图数据敬请期待</p>
     </div>
     <div class="list-container">
-      <PullRefresh v-model="refreshing" @refresh="onRefresh" loading-text="刷新中" disabled>
+      <PullRefresh loading-text="刷新中" disabled>
         <List v-model="listLoading" :finished="finished" :finished-text="noData ? '' : '到底了~'" @load="onLoad">
           <template v-slot:loading>
             <Loading type="spinner" class="py-5" />
@@ -30,19 +30,16 @@
         </List>
       </PullRefresh>
     </div>
-    <!-- <img src="/img/icons/icon-scroll-top.png" class="scroll-top" @click="scrollToTop" v-show="showScrollTop" /> -->
   </div>
 </template>
 
 <script>
-import { defineComponent, reactive, onMounted } from 'vue'
+import { defineComponent, reactive, onMounted, toRefs } from 'vue'
 import { getDataByAddr, getDataByXY, getDataBySearch } from '../../apis'
 import { List, PullRefresh, Loading, Search } from 'vant'
 import CardStoreInfo from '../../components/CardStoreInfo.vue'
 import MapSelectMenu from '../../components/map/mapSelectMenu.vue'
 import mapState from '../../mapState'
-import wx from 'weixin-js-sdk'
-const AMap = window.AMap
 
 async function fetchType(params) {
   let ret
@@ -60,7 +57,6 @@ async function fetchType(params) {
 }
 
 export default defineComponent({
-  name: 'StoresMap',
   components: {
     List,
     PullRefresh,
@@ -71,20 +67,7 @@ export default defineComponent({
   },
   setup() {
     const state = reactive({
-      listData: []
-    })
-    const getList = async () => {
-      // const list = await fetchType(1)
-      state.listData = [1, 2, 3]
-    }
-    onMounted(() => {
-      getList()
-    })
-    return { state }
-  },
-  data() {
-    return {
-      /* eslint-disable @typescript-eslint/camelcase */
+      listData: [],
       query: {
         mode: 1,
         keyword: '', //搜索
@@ -96,263 +79,25 @@ export default defineComponent({
       signatureQuery: {
         url: location.href.split('#')[0]
       }
-      // refreshing: false,
-      // listLoading: false,
-      // finished: false,
-      // noData: false,
-      // // listData: [],
-      // shareState: mapState.state, //store共享信息
-      // domHeight: document.documentElement.clientHeight,
-      // domScrollTop: 0
+    })
+    const getList = async () => {
+      // const list = await fetchType(1)
+      state.listData = [1, 2, 3]
     }
-  },
-  methods: {
-    onLoad() {
-      console.log('load')
-    },
-    menuChange(id) {
-      console.log(this.state.listData, id)
-      this.state.listData = [4, 5, 6]
+    onMounted(() => {
+      getList()
+    })
+    function menuChange(id) {
+      state.listData = id == 2 ? [4, 5, 6] : [1, 2, 3]
     }
+    function onSearch(val) {
+      console.log(val)
+    }
+    return { ...toRefs(state), menuChange, onSearch }
   }
-  // async created() {
-  //   this.loading = false
-  //   await this.wxLocation()
-  // },
-  // mounted() {
-  //   // this.query.keyword = this.shareState.keyword;
-  //   console.log('mounted', this.state)
-  //   this.query.orderBy = this.shareState.orderBy
-  //   if (!this.shareState.locationLng) {
-  //     const _locationLng = window.sessionStorage.getItem('locationLng')
-  //     const _locationLat = window.sessionStorage.getItem('locationLat')
-  //     if (_locationLng != null && _locationLng != 'null' && _locationLng != '' && _locationLng != undefined) {
-  //       console.log(_locationLng + ',' + _locationLat)
-  //       mapState.setLongitude(_locationLng)
-  //       mapState.setLatitude(_locationLat)
-  //       mapState.setLocationLng(_locationLng) //存储定位坐标
-  //       mapState.setLocationLat(_locationLat)
-  //     }
-  //   }
-  //   window.onscroll = e => {
-  //     this.domScrollTop = e.target.scrollingElement.scrollTop
-  //   }
-  // },
-  // computed: {
-  //   showScrollTop() {
-  //     return this.domScrollTop > this.domHeight * 2
-  //   }
-  // },
-  // methods: {
-  //   fetchType() {
-  //     if (this.shareState.selectProvince && this.shareState.userSearch) {
-  //       this.fetchBySearch()
-  //     } else if (this.shareState.locationLng) {
-  //       const _lngLat = this.shareState.locationLng + ',' + this.shareState.locationLat
-  //       this.getAddrBylng(_lngLat)
-  //       this.fetchByXY()
-  //     } else {
-  //       this.fetchByAddr()
-  //     }
-  //   },
-  //   menuChange(id) {
-  //     console.log('选择的id:' + id)
-  //   },
-  //   getAddrBylng(lnglat) {
-  //     const geocoder = new AMap.Geocoder({
-  //       city: ''
-  //     })
-  //     geocoder.getAddress(lnglat, function (status, result) {
-  //       if (status === 'complete' && result.regeocode) {
-  //         const _province = result.regeocode.addressComponent.province || ''
-  //         const _city = result.regeocode.addressComponent.city || result.regeocode.addressComponent.province || ''
-  //         const _area = result.regeocode.addressComponent.district || ''
-
-  //         mapState.setProvince(_province)
-  //         mapState.setCity(_city)
-  //         mapState.setArea(_area)
-  //       } else {
-  //         console.log('根据经纬度查询地址失败')
-  //       }
-  //     })
-  //   },
-  //   linkToTMap() {
-  //     this.$refs.compSelect.maskClose()
-  //     this.$router.push('/TMapMode')
-  //   },
-  //   onChangeArea() {
-  //     this.query.page = 1
-  //     mapState.setSearchState(true)
-  //     this.fetchBySearch()
-  //   },
-  //   onChangeOrder(checked) {
-  //     this.query.orderBy = checked
-  //     this.query.page = 1
-  //     mapState.setSearchState(true)
-  //     this.fetchType()
-  //   },
-  //   onSearch() {
-  //     this.query.page = 1
-  //     mapState.setSearchState(true)
-  //     this.fetchBySearch()
-  //   },
-  //   Init() {
-  //     this.refreshing = false
-  //     this.finished = false
-  //     this.listLoading = true
-  //     this.noData = false
-  //   },
-  //   async fetchByAddr() {
-  //     this.Init()
-  //     /* eslint-disable @typescript-eslint/camelcase */
-  //     const _addr = {
-  //       mode: 1,
-  //       orderBy: this.query.orderBy,
-  //       radius: this.query.radius,
-  //       page: this.query.page,
-  //       page_size: 10
-  //     }
-  //     if (this.query.page == 1) {
-  //       this.listData = []
-  //     }
-  //     try {
-  //       const _listData = await getDataByAddr(_addr)
-  //       if (_listData.Lng) {
-  //         const _lngLat = _listData.Lng + ',' + _listData.Lat
-  //         this.getAddrBylng(_lngLat)
-  //       }
-  //       this.noData = false
-  //       this.listData = this.listData.concat(..._listData.OtherList)
-  //       if (this.query.page == 1 && (!_listData.OtherList || _listData.OtherList.length == 0)) {
-  //         this.noData = true
-  //         this.finished = true
-  //         return
-  //       }
-  //       if (_listData.OtherList.length < _addr.page_size) {
-  //         this.finished = true
-  //       } else {
-  //         this.query.page++
-  //       }
-  //     } catch (err) {
-  //       this.finished = true
-  //       this.error = err
-  //     }
-  //     this.listLoading = false
-  //   },
-  //   async fetchByXY() {
-  //     this.Init()
-  //     /* eslint-disable @typescript-eslint/camelcase */
-  //     const _xyPosition = {
-  //       mode: 1,
-  //       orderBy: this.query.orderBy,
-  //       radius: this.query.radius,
-  //       lng: this.shareState.locationLng,
-  //       lat: this.shareState.locationLat,
-  //       page: this.query.page,
-  //       page_size: 10
-  //     }
-  //     if (this.query.page == 1) {
-  //       this.listData = []
-  //     }
-  //     try {
-  //       const _listData = await getDataByXY(_xyPosition)
-  //       // this.fetchBySearch()
-  //       this.noData = false
-  //       this.listData = this.listData.concat(..._listData.OtherList)
-  //       if (this.query.page == 1 && (!_listData.OtherList || _listData.OtherList.length == 0)) {
-  //         this.noData = true
-  //         this.finished = true
-  //         return
-  //       }
-  //       if (_listData.OtherList.length < _xyPosition.page_size) {
-  //         this.finished = true
-  //       } else {
-  //         this.query.page++
-  //       }
-  //     } catch (err) {
-  //       this.finished = true
-  //       this.noData = true
-  //       this.error = err
-  //     }
-  //     this.listLoading = false
-  //   },
-  //   async fetchBySearch() {
-  //     this.Init()
-  //     /* eslint-disable @typescript-eslint/camelcase */
-  //     const _bySearch = {
-  //       mode: 1,
-  //       orderBy: this.query.orderBy,
-  //       radius: this.query.radius,
-  //       lng: this.shareState.locationLng,
-  //       lat: this.shareState.locationLat,
-  //       keyword: this.query.keyword,
-  //       province: this.shareState.selectProvince,
-  //       city: this.shareState.selectCity,
-  //       district: this.shareState.selectArea,
-  //       page: this.query.page,
-  //       page_size: 10
-  //     }
-  //     if (!_bySearch.lng) {
-  //       delete _bySearch.lng
-  //       delete _bySearch.lat
-  //     }
-  //     if (this.query.page == 1) {
-  //       this.listData = []
-  //     }
-  //     try {
-  //       const _listData = await getDataBySearch(_bySearch)
-  //       this.noData = false
-  //       if (this.query.page == 1 && (!_listData.OtherList || _listData.OtherList.length == 0)) {
-  //         this.noData = true
-  //         this.finished = true
-  //         return
-  //       }
-  //       this.listData = this.listData.concat(..._listData.OtherList)
-  //       if (_listData.OtherList && _listData.OtherList.length < this.query.page_size) {
-  //         this.finished = true
-  //       } else {
-  //         this.query.page++
-  //       }
-  //     } catch (err) {
-  //       this.finished = true
-  //       this.error = err
-  //     }
-  //     this.listLoading = false
-  //   },
-  //   onRefresh() {
-  //     this.refreshing = true
-  //     this.finished = false
-  //     this.listLoading = true
-  //     this.noData = false
-  //     this.query.page = 1
-  //     this.fetchType()
-  //   },
-  //   onLoad() {
-  //     if (this.noData) return
-  //     console.log(this.state.listData)
-  //     fetchType()
-  //   },
-  //   scrollToTop() {
-  //     if (document.scrollingElement) {
-  //       document.scrollingElement.scrollTop = 0
-  //     }
-  //   },
-  //   async wxLocation() {
-  //     wx.getLocation({
-  //       type: 'gcj02', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
-  //       success: res => {
-  //         const latitude = res.latitude // 纬度，浮点数，范围为90 ~ -90
-  //         const longitude = res.longitude // 经度，浮点数，范围为180 ~ -180。
-  //         mapState.setLongitude(longitude)
-  //         mapState.setLatitude(latitude)
-  //         mapState.setLocationLng(longitude) //存储定位坐标
-  //         mapState.setLocationLat(latitude)
-  //       }
-  //     })
-  //   }
-  // }
 })
 </script>
+
 <style lang="scss" scoped>
 .searchBox {
   width: 64%;
