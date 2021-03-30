@@ -30,11 +30,6 @@ export default defineConfig({
    * @default 'dist'
    */
   outDir: 'dist',
-  port: 3000,
-  // 是否自动在浏览器打开
-  open: false,
-  // 是否开启 https
-  https: false,
   // 服务端渲染
   ssr: false,
   plugins: [vue()],
@@ -48,11 +43,9 @@ export default defineConfig({
     ]
   },
   server: {
+    port: 3000,
     proxy: {
-      '/wxmp/*': {
-        target: process.env.VITE_APP_ROOT,
-        changeOrigin: true
-      }
+      '/api': process.env.VITE_APP_ROOT
     }
   }
 })

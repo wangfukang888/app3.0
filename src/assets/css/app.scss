@@ -107,3 +107,13 @@ input[type='search'] {
 .van-search__content {
   background-color: #fff;
 }
+
+.button.primary {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(86deg, #f40, #ff9029);
+  border-radius: 40px;
+  color: #eee;
+  font-size: 16px;
+}

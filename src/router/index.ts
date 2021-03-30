@@ -1,7 +1,7 @@
 import { createWebHistory, createRouter } from 'vue-router'
-import Home from '../views/tab-bar/home.vue'
-import Map from '../views/tab-bar/map.vue'
-import Growup from '../views/tab-bar/growup.vue'
+import Home from '../views/tabbar/home.vue'
+import Map from '../views/tabbar/map.vue'
+import Growup from '../views/tabbar/growup.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -31,6 +31,14 @@ const router = createRouter({
       meta: {
         index: 1,
         showTabBar: true
+      }
+    },
+    {
+      path: '/debug',
+      name: 'Debug',
+      component: () => import('../views/debug/index.vue'),
+      meta: {
+        index: 99
       }
     },
     {

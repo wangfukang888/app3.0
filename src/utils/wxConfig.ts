@@ -7,7 +7,6 @@ export default {
     //需要使用的api列表
     return new Promise((resolve, reject) => {
       getSignature(params).then(res => {
-        console.log(res)
         if (res && res.signature) {
           wx.config({
             appId: res.appId,

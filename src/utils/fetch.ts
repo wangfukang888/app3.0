@@ -2,7 +2,6 @@ import axios from 'axios'
 import { Toast } from 'vant'
 
 const OK = 0
-const env: any = (import.meta as any).env
 
 axios.defaults.timeout = 10000
 
@@ -13,7 +12,7 @@ const headers = {
 const params = {}
 
 const http = axios.create({
-  baseURL: env.DEV ? '/' : env.VITE_APP_ROOT,
+  baseURL: '/api/v1',
   params,
   headers
 })
@@ -30,7 +29,6 @@ http.interceptors.response.use(
   err => {
     try {
       const err_code = err.response.status
-      console.log(err_code)
       switch (err_code) {
         case 401:
           // 登录过期 ,2秒后跳转
@@ -55,9 +53,8 @@ http.interceptors.response.use(
 // 请求拦截
 http.interceptors.request.use(
   function (config) {
-    const TOKEN =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjk3MDYzODQ5LCJtc19pZCI6MTAyNjUsImxldmVsIjoxLCJzZXR0aW5ncyI6eyJtYWludGFpbiI6eyJzdGF0ZSI6MCwibXNnIjoiIn19LCJleHAiOjE2MTE3Mzc2NjN9.ziHAgOs0X9C6YK7OwLsvA7sSRm4pUDX3BhhJBS33APg'
-    config.headers['Authorization'] = `Bearer ${TOKEN}`
+    const TOKEN = ''
+    if (TOKEN) config.headers['Authorization'] = `Bearer ${TOKEN}`
     return config
   },
   err => {
