@@ -34,26 +34,27 @@
 
 <script>
 import { defineComponent, reactive, onMounted, toRefs } from 'vue'
+// import AMap from 'AMap'
 import { getDataByAddr, getDataByXY, getDataBySearch } from '../../apis'
 import { List, PullRefresh, Loading, Search } from 'vant'
 import CardStoreInfo from '../../components/CardStoreInfo.vue'
 import MapSelectMenu from '../../components/map/mapSelectMenu.vue'
 import mapState from '../../mapState'
 
-// async function fetchType(params) {
-//   let ret
-//   const { locationLng, userSearch } = mapState.state
-//   if (locationLng) {
-//     ret = await getDataByXY(params)
-//   }
-//   if (!locationLng) {
-//     ret = await getDataByAddr(params)
-//   }
-//   if (userSearch) {
-//     ret = await getDataBySearch(params)
-//   }
-//   return ret
-// }
+async function fetchType(params) {
+  let ret
+  const { locationLng, userSearch } = mapState.state
+  if (locationLng) {
+    ret = await getDataByXY(params)
+  }
+  if (!locationLng) {
+    ret = await getDataByAddr(params)
+  }
+  if (userSearch) {
+    ret = await getDataBySearch(params)
+  }
+  return ret
+}
 
 export default defineComponent({
   components: {
@@ -80,7 +81,15 @@ export default defineComponent({
       }
     })
     const getList = async () => {
-      // const list = await fetchType(1)
+      const { orderBy, radius, page } = state.query
+      const list = await fetchType({
+        mode: 1,
+        orderBy,
+        radius,
+        page,
+        page_size: 10
+      })
+      console.log(list)
       state.listData = [1, 2, 3]
     }
     onMounted(() => {
@@ -96,7 +105,7 @@ export default defineComponent({
   },
   methods: {
     linkToTMap() {
-      this.$router.push('/debug')
+      // this.$router.push('/debug')
     }
   }
 })

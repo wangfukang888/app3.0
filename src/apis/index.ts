@@ -1,5 +1,4 @@
 import req from '../utils/fetch'
-import qs from 'qs'
 import { GrowupDataResponse } from '../interfaces/api'
 
 //获取首页信息
@@ -19,20 +18,20 @@ export function getGrowupData(): Promise<GrowupDataResponse> {
 
 //获取signature
 export function getSignature(params: object): Promise<any> {
-  return req.get(`wxmp/store_map/signature?${qs.stringify(params)}`)
+  return req.get('wxmp/store_map/signature', { params })
 }
 
 //获取不到经纬度
 export function getDataByAddr(params: object): Promise<any> {
-  return req.get(`wxmp/store_map/list_by_useraddr?${qs.stringify(params)}`)
+  return req.get('wxmp/store_map/list_by_useraddr', { params })
 }
 
 //获取到经纬度
 export function getDataByXY(params: object): Promise<any> {
-  return req.get(`wxmp/store_map/list_by_xy?${qs.stringify(params)}`)
+  return req.get('wxmp/store_map/list_by_xy', { params })
 }
 
 //搜索接口
 export function getDataBySearch(params: object): Promise<any> {
-  return req.get(`wxmp/store_map/search?${qs.stringify(params)}`)
+  return req.get('wxmp/store_map/search', { params })
 }
