@@ -1,9 +1,9 @@
 <template>
-  <div class="map-container">
+  <div class="map-container absolute w-full">
     <div class="sticky fixed left-0 top-0 text-14 bg-gray-lg header">
       <div class="h-50 flex justify-between pl-16 pr-12">
         <div class="flex items-center" @click="linkToTMap">
-          <img src="/img/icons/icon-map-style.png" class="w-20 h-20" />
+          <img src="@img/icons/icon-map-style.png" class="w-20 h-20" />
           <div class="pl-8 text-16">地图模式</div>
         </div>
         <form action="javascript:return" class="searchBox">
@@ -12,9 +12,8 @@
       </div>
       <MapSelectMenu ref="compSelect" @selectChange="menuChange" />
     </div>
-    {{ listData }}
     <div class="px-12 empty" v-if="noData">
-      <img class="w-130 h-130" src="/img/icons/icon-empty.png" />
+      <img class="w-130 h-130" src="@img/icons/icon-empty.png" />
       <p class="text-16 text-black-3 mt-10">当前所在城市未获取地图数据敬请期待</p>
     </div>
     <div class="list-container">
@@ -41,20 +40,20 @@ import CardStoreInfo from '../../components/CardStoreInfo.vue'
 import MapSelectMenu from '../../components/map/mapSelectMenu.vue'
 import mapState from '../../mapState'
 
-async function fetchType(params) {
-  let ret
-  const { locationLng, userSearch } = mapState.state
-  if (locationLng) {
-    ret = await getDataByXY(params)
-  }
-  if (!locationLng) {
-    ret = await getDataByAddr(params)
-  }
-  if (userSearch) {
-    ret = await getDataBySearch(params)
-  }
-  return ret
-}
+// async function fetchType(params) {
+//   let ret
+//   const { locationLng, userSearch } = mapState.state
+//   if (locationLng) {
+//     ret = await getDataByXY(params)
+//   }
+//   if (!locationLng) {
+//     ret = await getDataByAddr(params)
+//   }
+//   if (userSearch) {
+//     ret = await getDataBySearch(params)
+//   }
+//   return ret
+// }
 
 export default defineComponent({
   components: {
@@ -94,6 +93,11 @@ export default defineComponent({
       console.log(val)
     }
     return { ...toRefs(state), menuChange, onSearch }
+  },
+  methods: {
+    linkToTMap() {
+      this.$router.push('/debug')
+    }
   }
 })
 </script>

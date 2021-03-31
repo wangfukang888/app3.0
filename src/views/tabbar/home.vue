@@ -79,14 +79,14 @@
             <router-link to="/">
               <div class="flex items-center justify-center">
                 <p class="text-14 text-black-6 pr-5">累计收入</p>
-                <img class="w-13 h-13 -mt-2" src="/img/icons/n-right.png" />
+                <img class="w-13 h-13 -mt-2" src="@img/icons/n-right.png" />
               </div>
             </router-link>
           </div>
         </Card>
 
         <router-link to="/">
-          <img class="mt-10 w-full rounded-8" src="/img/banner.png" />
+          <img class="mt-10 w-full rounded-8" src="@img/banner.png" />
         </router-link>
 
         <Card class="mt-10 font-medium" title="团队管理">
@@ -121,8 +121,8 @@
         </Card>
 
         <Card class="mt-10 bar" title="热销商品对比" :is_bg="false" to="/price/compare">
-          <img class="arrow-more" src="/img/icons/n-right.png" />
-          <img class="icon w-13 h-13 title-icon" src="/img/icons/icon-goods.png" />
+          <img class="arrow-more" src="@img/icons/n-right.png" />
+          <img class="icon w-13 h-13 title-icon" src="@img/icons/icon-goods.png" />
         </Card>
       </div>
     </div>

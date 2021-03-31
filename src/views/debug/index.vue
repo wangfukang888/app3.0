@@ -1,5 +1,5 @@
 <template>
-  <div class="p-10">
+  <div class="p-10 fixed">
     <div>
       <h1 class="my-10 font-bold text-16"># Token 模拟登陆,设置成功后，点击去主页</h1>
       <div class="mt-10 flex">
@@ -13,7 +13,7 @@
       <div class="mt-20 flex">
         <button class="m-auto py-10 px-20 button primary" @click="save">保存</button>
         <button class="m-auto py-10 px-20 button primary" @click="goHqHome">去黄雀</button>
-        <button class="m-auto py-10 px-20 button primary" @click="goWtHome">去万团</button>
+        <button class="m-auto py-10 px-20 button primary" @click="$router.push('/')">去万团</button>
       </div>
     </div>
 
@@ -37,14 +37,23 @@ export default defineComponent({
       token: '',
       uuid: ''
     })
-
     async function fetch() {
       const { uuid, id } = state
       const ret = await getToken(uuid, id)
-      console.log(ret)
+      if (ret) state.token = ret
     }
+    function save() {
+      window.localStorage.setItem('TOKEN', state.token)
+    }
+    function clear() {
+      window.localStorage.clear()
+      this.$toast('清除成功')
+    }
+
     return {
       ...toRefs(state),
+      save,
+      clear,
       fetch
     }
   }

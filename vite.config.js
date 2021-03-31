@@ -1,4 +1,5 @@
 import vue from '@vitejs/plugin-vue'
+import vitePluginImp from 'vite-plugin-imp'
 import { defineConfig } from 'vite'
 const path = require('path')
 const fs = require('fs')
@@ -32,15 +33,28 @@ export default defineConfig({
   outDir: 'dist',
   // 服务端渲染
   ssr: false,
-  plugins: [vue()],
+  plugins: [
+    vue(),
+    vitePluginImp({
+      libList: [
+        {
+          libName: 'vant',
+          style(name) {
+            if (/CompWithoutStyleFile/i.test(name)) {
+              // This will not import any style file
+              return false
+            }
+            return `vant/es/${name}/index.css`
+          }
+        }
+      ]
+    })
+  ],
   resolve: {
-    alias: [
-      { find: '/@', replacement: path.resolve(__dirname, './src') },
-      {
-        find: '/img',
-        replacement: path.resolve(__dirname, './src/assets/images')
-      }
-    ]
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+      '@img': path.resolve(__dirname, './src/assets/images')
+    }
   },
   server: {
     port: 3000,

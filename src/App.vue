@@ -41,9 +41,9 @@ export default {
       }
     }
   },
-  // mounted() {
-  //   this.wxLocation()
-  // },
+  mounted() {
+    this.wxLocation()
+  },
   methods: {
     async wxLocation() {
       const wx: any = await wxApp.init(['getLocation', 'openLocation'], { url: location.href.split('#')[0] }).catch(() => {

@@ -38,6 +38,9 @@ http.interceptors.response.use(
           //   router.push('/login')
           // }, 2000)
           break
+        case 404:
+          Toast('请求地址未找到')
+          break
         case 500:
           Toast('服务器访问失败,请刷新后重试')
           break
@@ -53,7 +56,7 @@ http.interceptors.response.use(
 // 请求拦截
 http.interceptors.request.use(
   function (config) {
-    const TOKEN = ''
+    const TOKEN = window.localStorage.getItem('TOKEN')
     if (TOKEN) config.headers['Authorization'] = `Bearer ${TOKEN}`
     return config
   },
