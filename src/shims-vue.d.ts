@@ -4,5 +4,6 @@ declare module '*.vue' {
   export default component
 }
 
+declare module 'api'
 declare module 'qs'
 declare module 'weixin-js-sdk'

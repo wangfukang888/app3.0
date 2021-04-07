@@ -41,15 +41,17 @@ export default {
       }
     }
   },
-  mounted() {
-    this.wxLocation()
-  },
+  // mounted() {
+  //   this.wxLocation()
+  // },
   methods: {
     async wxLocation() {
-      const wx: any = await wxApp.init(['getLocation', 'openLocation'], { url: location.href.split('#')[0] }).catch(() => {
-        this.$toast('微信定位获取失败，请刷新重试!')
-        return
-      })
+      const wx: any = await wxApp
+        .init(['getLocation', 'openLocation'], { url: location.href.split('#')[0] })
+        .catch(() => {
+          this.$toast('微信定位获取失败，请刷新重试!')
+          return
+        })
       wx &&
         wx.getLocation({
           type: 'gcj02', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
@@ -61,7 +63,8 @@ export default {
           },
           fail: () => {
             this.$dialog.alert({
-              message: '检测到未开启微信定位服务，请前往手机设置中打开微信定位服务，否则地图定位功能无法正常使用！',
+              message:
+                '检测到未开启微信定位服务，请前往手机设置中打开微信定位服务，否则地图定位功能无法正常使用！',
               theme: 'round-button',
               confirmButtonText: '我知道了'
             })

@@ -1,12 +1,12 @@
 import wx from 'weixin-js-sdk'
-import { getSignature } from '../apis'
+import { getSignature } from '../api'
 
 export default {
   /* 初始化wxjsdk各种接口 */
   init(apiList: string[], params: object) {
     //需要使用的api列表
     return new Promise((resolve, reject) => {
-      getSignature(params).then(res => {
+      getSignature(params).then((res) => {
         if (res && res.signature) {
           wx.config({
             appId: res.appId,

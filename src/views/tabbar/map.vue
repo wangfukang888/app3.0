@@ -7,7 +7,13 @@
           <div class="pl-8 text-16">地图模式</div>
         </div>
         <form action="javascript:return" class="searchBox">
-          <Search left-icon="left-icon" v-model="query.keyword" shape="round" placeholder="搜索地址" @search="onSearch" />
+          <Search
+            left-icon="left-icon"
+            v-model="query.keyword"
+            shape="round"
+            placeholder="搜索地址"
+            @search="onSearch"
+          />
         </form>
       </div>
       <MapSelectMenu ref="compSelect" @selectChange="menuChange" />
@@ -18,13 +24,23 @@
     </div>
     <div class="list-container">
       <PullRefresh loading-text="刷新中" disabled>
-        <List v-model="listLoading" :finished="finished" :finished-text="noData ? '' : '到底了~'" @load="onLoad">
+        <List
+          v-model="listLoading"
+          :finished="finished"
+          :finished-text="noData ? '' : '到底了~'"
+          @load="onLoad"
+        >
           <template v-slot:loading>
             <Loading type="spinner" class="py-5" />
           </template>
 
           <div v-if="listData && listData.length > 0">
-            <CardStoreInfo class="mb-10" v-for="(item, index) in listData" :key="index" :itemData="item"></CardStoreInfo>
+            <CardStoreInfo
+              class="mb-10"
+              v-for="(item, index) in listData"
+              :key="index"
+              :itemData="item"
+            ></CardStoreInfo>
           </div>
         </List>
       </PullRefresh>
@@ -35,7 +51,7 @@
 <script>
 import { defineComponent, reactive, onMounted, toRefs } from 'vue'
 // import AMap from 'AMap'
-import { getDataByAddr, getDataByXY, getDataBySearch } from '../../apis'
+import { getDataByAddr, getDataByXY, getDataBySearch } from 'api'
 import { List, PullRefresh, Loading, Search } from 'vant'
 import CardStoreInfo from '../../components/CardStoreInfo.vue'
 import MapSelectMenu from '../../components/map/mapSelectMenu.vue'
@@ -44,6 +60,7 @@ import mapState from '../../mapState'
 async function fetchType(params) {
   let ret
   const { locationLng, userSearch } = mapState.state
+  console.log(locationLng)
   if (locationLng) {
     ret = await getDataByXY(params)
   }

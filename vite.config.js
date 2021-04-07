@@ -53,7 +53,8 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      '@img': path.resolve(__dirname, './src/assets/images')
+      '@img': path.resolve(__dirname, './src/assets/images'),
+      api: path.resolve(__dirname, './src/api')
     }
   },
   server: {

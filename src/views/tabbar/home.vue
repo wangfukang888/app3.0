@@ -12,7 +12,10 @@
       <div class="_" style="height: 1.947%; top: 42.443%; left: 11.188%; width: 14.925%"></div>
       <div class="_" style="height: 1.949%; top: 40.342%; left: 71.758%; width: 14.921%"></div>
       <div class="_" style="height: 1.947%; top: 40.194%; left: 88.013%; width: 3.463%"></div>
-      <div class="_" style="height: 10.963%; top: 48.131%; left: 3.196%; width: 93.608%; border-radius: 7.99999px"></div>
+      <div
+        class="_"
+        style="height: 10.963%; top: 48.131%; left: 3.196%; width: 93.608%; border-radius: 7.99999px"
+      ></div>
       <div class="_" style="height: 2.399%; top: 63.585%; left: 12.525%; width: 78.95%"></div>
       <div class="_" style="height: 3.448%; top: 68.977%; left: 11.188%; width: 36.075%"></div>
       <div class="_" style="height: 1.949%; top: 73.323%; left: 11.188%; width: 36.075%"></div>
@@ -29,10 +32,15 @@
     </div>
     <div class="padding-bar" v-else>
       <div class="cover flex">
-        <Img v-if="state.partner" class="w-60 h-60 rounded-full border border-white mr-5" radius="50%" :src="state.partner.avatar" />
+        <Img
+          v-if="partner"
+          class="w-60 h-60 rounded-full border border-white mr-5"
+          radius="50%"
+          :src="partner.avatar"
+        />
         <div class="flex-1 ml-10 flex flex-col" @click="goBack('/detail')">
-          <span class="text-18 text-left mt-5 text-white mb-10 ellipsis-1 font-semibold">{{ state.partner.nickname }}</span>
-          <Level :num="state.partner.level" />
+          <span class="text-18 text-left mt-5 text-white mb-10 ellipsis-1 font-semibold">{{ partner.nickname }}</span>
+          <Level :num="partner.level" />
         </div>
         <div class="flex pt-20 pl-16">
           <p class="text-15 text-white font-medium">退出</p>
@@ -44,28 +52,28 @@
           <div class="pt-10 pb-20 flex relative fb-w550">
             <div class="flex-1 pl-10">
               <p class="text-24 font-digit">
-                {{ state.income.month_estimated }}
+                {{ income.month_estimated }}
               </p>
               <p class="mt-3 text-14 text-black-6">本月预估推广奖励</p>
             </div>
             <div class="line"></div>
             <div class="flex-1 pl-30">
               <p class="text-24 font-digit letter-small-2">
-                {{ state.income.month_mission_reward }}
+                {{ income.month_mission_reward }}
               </p>
               <p class="mt-3 text-14 text-black-6">本月任务奖励</p>
             </div>
           </div>
-          <div class="text-14 reward-sum pt-10 pb-10 pl-10" v-if="state.partner.level > 1 && state.bred_info">
+          <div class="text-14 reward-sum pt-10 pb-10 pl-10" v-if="partner.level > 1">
             <div class="arrow-top"></div>
             <p class="font-semibold">
-              本月新增育成<span v-if="state.partner.level == 2">导师</span><span v-else>顾问</span
-              ><span class="px-2">{{ state.bred_info.bred_members }}</span
-              >人，奖励<span class="text-red-reward text-24 letter-small-2 pl-2">{{ state.bred_info.extra_bred_bonus }}</span>
+              本月新增育成<span v-if="partner.level == 2">导师</span><span v-else>顾问</span
+              ><span class="px-2">{{ income.bred_members }}</span
+              >人，奖励<span class="text-red-reward text-24 letter-small-2 pl-2">{{ income.extra_bred_bonus }}</span>
             </p>
             <p class="text-black-6 pt-5">
-              (&nbsp;新增育成<span v-if="state.partner.level == 2">导师</span><span v-else>顾问</span>前30天，可额外获得<span
-                v-if="state.partner.level == 2"
+              (&nbsp;新增育成<span v-if="partner.level == 2">导师</span><span v-else>顾问</span>前30天，可额外获得<span
+                v-if="partner.level == 2"
                 >200</span
               ><span v-else>300</span>%育成奖&nbsp;)
             </p>
@@ -73,7 +81,7 @@
           <div class="flex relative b-line" v-else></div>
           <div class="flex items-center justify-between pt-20 pb-10 fb-w550">
             <div class="pl-10">
-              <p class="text-24 font-digit letter-small-2">{{ state.income.today_estimated }}</p>
+              <p class="text-24 font-digit letter-small-2">{{ income.today_estimated }}</p>
               <p class="text-14 text-black-6 pt-5">今日收入</p>
             </div>
             <router-link to="/">
@@ -93,7 +101,7 @@
           <div class="pt-5 pb-15 flex relative fb-w550">
             <div class="flex-1 pl-10">
               <p class="text-24 font-digit">
-                {{ state.family.today_referral }}
+                {{ relation.today_referral }}
               </p>
               <p class="mt-6 text-14 text-black-2">今日邀请(人）</p>
               <router-link class="button mt-15 text-13 text-white flex justify-center items-center rounded-full" to="/"
@@ -103,7 +111,7 @@
             <div class="line"></div>
             <div class="flex-1 pl-30">
               <p class="text-24 font-digit letter-small-2">
-                {{ state.family.total_referral }}
+                {{ relation.total_referral }}
               </p>
               <p class="mt-6 text-14 text-black-2">总邀请社区(人）</p>
               <router-link class="button mt-15 text-13 text-white flex justify-center items-center rounded-full" to="/"
@@ -112,9 +120,9 @@
             </div>
           </div>
           <div class="flex relative bt"></div>
-          <div class="mt-20 fb-w550" v-if="state.partner.level !== 1">
+          <div class="mt-20 fb-w550" v-if="partner.level !== 1">
             <p class="pl-10">
-              <span class="text-24 font-digit letter-small-2">{{ state.family.total_members }}</span>
+              <span class="text-24 font-digit letter-small-2">{{ relation.total_members }}</span>
               <span class="text-14 text-black-2 ml-10" style="position: relative; bottom: 3px">团队总人数(人）</span>
             </p>
           </div>
@@ -130,8 +138,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, reactive, onMounted } from 'vue'
-import { getHome } from '../../apis'
+import { defineComponent, ref, reactive, onMounted, toRefs } from 'vue'
+import { getHome } from 'api'
 import Card from '../../base/card.vue'
 import Level from '../../base/level.vue'
 
@@ -153,8 +161,7 @@ export default defineComponent({
     const state = reactive({
       partner: {},
       income: {},
-      family: {},
-      bred_info: {}
+      relation: {}
     })
     const getInfo = async () => {
       const ret = await getHome()
@@ -162,8 +169,7 @@ export default defineComponent({
         loading.value = false
         state.partner = ret.partner
         state.income = ret.income
-        state.family = ret.family
-        state.bred_info = ret.bred_info
+        state.relation = ret.relation
       }
     }
     onMounted(() => {
@@ -172,7 +178,7 @@ export default defineComponent({
     return {
       is_icon,
       loading,
-      state
+      ...toRefs(state)
     }
   },
   methods: {

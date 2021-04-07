@@ -14,7 +14,11 @@
     <div class="padding-tabbar fixed w-full">
       <!-- <p class="title pl-35 pt-27 pb-18 bg-white text-21 font-semibold relative">成长</p> -->
       <div class="mx-12">
-        <div class="mt-10 px-40 py-20 bg-white rounded-8 font-medium" v-for="item in growupData" :key="item.desc">
+        <div
+          class="mt-10 px-40 py-20 bg-white rounded-8 font-medium"
+          v-for="item in growupData"
+          :key="item.desc"
+        >
           <p class="text-22 text-center font-digit">
             {{ item.current }}
             <span class="text-black-2">/ {{ item.criteria }}</span>
@@ -30,7 +34,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue'
-import { getGrowupData } from '../../apis'
+import { getGrowupData } from 'api'
 
 function apex(data: any) {
   for (let i = 0; i < data.length; i++) {

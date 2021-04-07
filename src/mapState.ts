@@ -15,8 +15,8 @@ const MapState = {
     lng: 0, //经度
     lat: 0, //纬度
     hiddenNicetuan: false, //在地图模式下是否隐藏nice团点位
-    locationLng: 112.93886, //开启定位的经度
-    locationLat: 28.22778, //开启定位的纬度
+    locationLng: 0, //开启定位的经度
+    locationLat: 0, //开启定位的纬度
     userSearch: false,
     mapTab: false
   },
